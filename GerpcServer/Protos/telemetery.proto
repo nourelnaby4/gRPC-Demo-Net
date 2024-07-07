@@ -13,6 +13,7 @@ import "google/protobuf/timestamp.proto";
 	 int32 speed = 2;
 	 Location location = 3;
 	 google.protobuf.Timestamp stamp = 4;
+	 Sensor sensor=5;
  }
 
  message Location{
@@ -22,4 +23,9 @@ import "google/protobuf/timestamp.proto";
 
  message TrackingResponse{
 	 bool success = 1;
+ }
+
+ message Sensor{
+	 string key=1;
+	 double value=2;
  }
