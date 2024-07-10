@@ -8,15 +8,21 @@
 
   <ItemGroup>
     <None Remove="Protos\telemetery.proto" />
+    <None Remove="Protos\telemetryService.proto" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="Protos\telemetery.proto" GrpcServices="Server" />
-  </ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="Protos\telemetryService.proto" GrpcServices="Server" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+
+	<ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.65.0-pre1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
