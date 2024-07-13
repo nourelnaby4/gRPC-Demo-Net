@@ -10,6 +10,7 @@ import "google/protobuf/timestamp.proto";
 service TrackingService {
 	rpc SendMessage (TrackingMessage) returns (TrackingResponse);
 	rpc KeepAlive (stream PulseMessage) returns (google.protobuf.Empty);
+	rpc SubscribeNotification (SubsrcribeRequest) returns (stream Notification);
 }
 
 
@@ -46,4 +47,13 @@ enum ClientStatus {
 	INVALID = 0;
 	WORKING = 1;
 	FAIL = 2;
+}
+
+message SubsrcribeRequest{
+	int32 deviceId = 1;
+}
+
+message Notification{
+	string text = 1;
+	google.protobuf.Timestamp stamp = 2;
 }

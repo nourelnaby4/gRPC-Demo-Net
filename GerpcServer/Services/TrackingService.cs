@@ -35,4 +35,21 @@ public class TelemetryTrackingService : TrackingService.TrackingServiceBase
 
         return new Empty();
     }
+
+    public override async Task SubscribeNotification(SubsrcribeRequest request, IServerStreamWriter<Notification> responseStream, ServerCallContext context)
+    {
+        var task = Task.Run(async () =>
+        {
+            while (!context.CancellationToken.IsCancellationRequested)
+            {
+                await responseStream.WriteAsync(new Notification
+                {
+                    Text = $"new notification for device {request.DeviceId}",
+                    Stamp = Timestamp.FromDateTime(DateTime.UtcNow),
+                });
+                await Task.Delay(3000);
+            }
+        });
+        await task;
+    }
 }

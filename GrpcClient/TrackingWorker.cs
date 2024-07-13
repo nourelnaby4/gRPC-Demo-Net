@@ -35,6 +35,8 @@ public class TrackingWorker : BackgroundService
 
         var keepAliveTask = KeepAlive(stoppingToken);
 
+        var subsribeTask = SubscribeNotification(stoppingToken);
+
         while (!stoppingToken.IsCancellationRequested)
         {
             await SendMessage(random);
@@ -42,7 +44,24 @@ public class TrackingWorker : BackgroundService
             await Task.Delay(1000, stoppingToken);
         }
 
-        await Task.WhenAll(keepAliveTask);
+        await Task.WhenAll(keepAliveTask , subsribeTask);
+    }
+
+    private async Task SubscribeNotification(CancellationToken stoppingToken)
+    {
+        var responseStream = Client.SubscribeNotification(new SubsrcribeRequest { DeviceId = _deviceId });
+
+        var task = Task.Run(async () =>
+        {
+            while (await responseStream.ResponseStream.MoveNext(stoppingToken))
+            {
+                var msg = responseStream.ResponseStream.Current;
+
+                _logger.LogInformation($"new message recieved from {msg.Text}");
+            }
+        });
+
+        await task;
     }
 
     private async Task KeepAlive(CancellationToken stoppingToken)
